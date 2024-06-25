@@ -1,3 +1,6 @@
+from tkinter import Tk, BOTH, Canvas
+
+
 class Window:
     def __init__(self, width, height):
         self.width = width
@@ -7,7 +10,7 @@ class Window:
         self.canvas = Canvas(self.root, width=self.width, height=self.height)
         self.canvas.pack(fill=BOTH, expand=True)
         self.running = False
-        self.root.protocal("WM_DELETE_WINDOW", self.close)
+        self.root.protocol("WM_DELETE_WINDOW", self.close)
 
     def redraw(self):
         self.root.update_idletasks()
