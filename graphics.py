@@ -72,9 +72,11 @@ class Cell:
         self.y2 = y2
         self.win = win
 
-# x1 y1 top left corner, x2 y2 bottom right corner
+# x1 y1 top left corner, x2 y2 bottom right corner y1 > y2
 # if LW == true, create line x1 y1 -> x1 y2 ...
     def draw(self, fill_colour="black"):
+        if self._win is None:
+            return
         if self.LW:
             l = Line(Point(self.x1, self.y1), Point(self.x1, self.y2))
             self.win.draw_line(l, fill_colour)
@@ -87,3 +89,24 @@ class Cell:
         if self.BW:
             l = Line(Point(self.x1, self.y2), Point(self.x2, self.y2))
             self.win.draw_line(l, fill_colour)
+
+# draws a path from the center of one cell to the next
+    def draw_move(self, to_cell, undo=False):
+        if undo == False:
+            colour = "red"
+        else:
+            colour = "gray"
+
+        half_point1 = abs(self.x2 - self.x1)//2
+        x_center1 = half_point1 + self.x1
+        y_center1 = half_point1 + self.y1
+
+        half_point2 = abs(to_cell.x2 - to_cell.x1)//2
+        x_center2 = half_point2 + to_cell.x1
+        y_center2 = half_point2 + to_cell.y1
+
+        mid_cell1 = Point(x_center1, y_center1)
+        mid_cell2 = Point(x_center2, y_center2)
+
+        l = Line(mid_cell1, mid_cell2)
+        self.win.draw_line(l, colour)
