@@ -61,7 +61,7 @@ class Line:
 
 
 class Cell:
-    def __init__(self, LW, RW, TW, BW, x1, x2, y1, y2, win):
+    def __init__(self, LW, RW, TW, BW, x1, x2, y1, y2, win=None):
         self.LW = LW
         self.RW = RW
         self.TW = TW
@@ -75,7 +75,7 @@ class Cell:
 # x1 y1 top left corner, x2 y2 bottom right corner y1 > y2
 # if LW == true, create line x1 y1 -> x1 y2 ...
     def draw(self, fill_colour="black"):
-        if self._win is None:
+        if self.win is None:
             return
         if self.LW:
             l = Line(Point(self.x1, self.y1), Point(self.x1, self.y2))
