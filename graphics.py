@@ -77,20 +77,33 @@ class Cell:
     def draw(self, fill_colour="black"):
         if self.win is None:
             return
+        LW_line = Line(Point(self.x1, self.y1), Point(self.x1, self.y2))
+        RW_line = Line(Point(self.x2, self.y1), Point(self.x2, self.y2))
+        TW_line = Line(Point(self.x1, self.y1), Point(self.x2, self.y1))
+        BW_line = Line(Point(self.x1, self.y2), Point(self.x2, self.y2))
+
         if self.LW:
-            l = Line(Point(self.x1, self.y1), Point(self.x1, self.y2))
-            self.win.draw_line(l, fill_colour)
+            self.win.draw_line(LW_line, fill_colour)
+        else:
+            self.win.draw_line(LW_line, "#D9D9D9")
+
         if self.RW:
-            l = Line(Point(self.x2, self.y1), Point(self.x2, self.y2))
-            self.win.draw_line(l, fill_colour)
+            self.win.draw_line(RW_line, fill_colour)
+        else:
+            self.win.draw_line(RW_line, "#D9D9D9")
+
         if self.TW:
-            l = Line(Point(self.x1, self.y1), Point(self.x2, self.y1))
-            self.win.draw_line(l, fill_colour)
+            self.win.draw_line(TW_line, fill_colour)
+        else:
+            self.win.draw_line(TW_line, "#D9D9D9")
+
         if self.BW:
-            l = Line(Point(self.x1, self.y2), Point(self.x2, self.y2))
-            self.win.draw_line(l, fill_colour)
+            self.win.draw_line(BW_line, fill_colour)
+        else:
+            self.win.draw_line(BW_line, "#D9D9D9")
 
 # draws a path from the center of one cell to the next
+
     def draw_move(self, to_cell, undo=False):
         if undo == False:
             colour = "red"
