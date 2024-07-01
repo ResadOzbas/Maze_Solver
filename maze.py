@@ -1,5 +1,6 @@
 from graphics import Cell
 import time
+import random
 
 
 class Maze:
@@ -12,6 +13,7 @@ class Maze:
         cell_size_x,
         cell_size_y,
         win=None,
+        seed=None
     ):
 
         self.x1 = x1
@@ -23,6 +25,7 @@ class Maze:
         self.win = win
         self._cells = []
         self._create_cells()
+        self.seed = seed
 
     def _create_cells(self):
         for col in range(self.num_cols):
@@ -67,3 +70,54 @@ class Maze:
         # break bottom wall of bottom right = Exit
         self._cells[self.num_cols - 1][self.num_rows - 1].BW = False
         self._draw_cells(self.num_cols - 1, self.num_rows - 1)
+
+    def _break_walls_r(self, i, j):
+        # marked current cell as visited
+        current_cell = self._cells[i][j]
+        current_cell.visited = True
+        # infinite loop
+
+        while True:
+            cells_to_visit = []
+            # keep track of adjacent cells that have not been visited from current cell
+            if i < self.num_cols - 1 and self._cells[i+1][j].visited == False:
+                cells_to_visit.append((i+1, j))
+            if j < self.num_rows - 1 and self._cells[i][j+1].visited == False:
+                cells_to_visit.append((i, j + 1))
+            if i > 0 and self._cells[i - 1][j].visited == False:
+                cells_to_visit.append((i-1, j))
+            if j > 0 and self._cells[i][j - 1].visited == False:
+                cells_to_visit.append((i, j-1))
+
+            # check if there is a direction to go
+            if len(cells_to_visit) == 0:
+                self._draw_cells(i, j)
+                return
+
+            # choose direction to go next
+            random_index = random.randint(0, len(cells_to_visit) - 1)
+            next_index = cells_to_visit[random_index]
+
+            # check which direction and remove walls between
+            if next_index[0] == i + 1:
+                current_cell.RW = False
+                self._cells[i + 1][j].LW = False
+
+            if next_index[0] == i - 1:
+                current_cell.RW = False
+                self._cells[i - 1][j].LW = False
+
+            if next_index[1] == j + 1:
+                current_cell.RW = False
+                self._cells[i][j + 1].LW = False
+
+            if next_index[1] == j - 1:
+                current_cell.RW = False
+                self._cells[i][j - 1].LW = False
+
+            self._break_walls_r(next_index[0], next_index[1])
+
+    def _reset_cells_visited(self):
+        for i in range(self.num_cols-1):
+            for j in range(self.num_rows-1):
+                self._cells[i][j].visited = False

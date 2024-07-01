@@ -71,9 +71,10 @@ class Cell:
         self.y1 = y1
         self.y2 = y2
         self.win = win
-
+        self.visited = False
 # x1 y1 top left corner, x2 y2 bottom right corner y1 > y2
 # if LW == true, create line x1 y1 -> x1 y2 ...
+
     def draw(self, fill_colour="black"):
         if self.win is None:
             return
