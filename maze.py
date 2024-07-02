@@ -25,7 +25,8 @@ class Maze:
         self.win = win
         self._cells = []
         self._create_cells()
-        self.seed = seed
+        if seed:
+            random.seed(seed)
 
     def _create_cells(self):
         for col in range(self.num_cols):
@@ -104,16 +105,16 @@ class Maze:
                 self._cells[i + 1][j].LW = False
 
             if next_index[0] == i - 1:
-                current_cell.RW = False
-                self._cells[i - 1][j].LW = False
+                current_cell.LW = False
+                self._cells[i - 1][j].RW = False
 
             if next_index[1] == j + 1:
-                current_cell.RW = False
-                self._cells[i][j + 1].LW = False
+                current_cell.BW = False
+                self._cells[i][j + 1].TW = False
 
             if next_index[1] == j - 1:
-                current_cell.RW = False
-                self._cells[i][j - 1].LW = False
+                current_cell.TW = False
+                self._cells[i][j - 1].BW = False
 
             self._break_walls_r(next_index[0], next_index[1])
 
@@ -121,3 +122,10 @@ class Maze:
         for i in range(self.num_cols-1):
             for j in range(self.num_rows-1):
                 self._cells[i][j].visited = False
+
+    def solve(self):
+        return self._solve_r(0, 0)
+
+    def _solve_r(self, i, j):
+        self._animate()
+        self._cells[i][j].visited = True
