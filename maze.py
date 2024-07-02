@@ -129,3 +129,45 @@ class Maze:
     def _solve_r(self, i, j):
         self._animate()
         self._cells[i][j].visited = True
+        # check if end cell
+        if i == self.num_cols - 1 and j == self.num_rows - 1:
+            return True
+        # Different directions
+        directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+
+        # for each direction
+        for di, dj in directions:
+            ni, nj = i+di, j+dj
+
+            # if new indexes are within bounds of matrix and haven't been visited yet
+            if 0 <= ni <= self.num_cols - 1 and 0 <= nj <= self.num_rows - 1 and self._cells[ni][nj].visited == False:
+                # if direction is to right and no wall: go right
+                if di == 1 and dj == 0 and self._cells[i][j].RW == False:
+                    self._cells[i][j].draw_move(self._cells[ni][nj])
+                    solved = self._solve_r(ni, nj)
+                    if solved:
+                        return True
+                    self._cells[i][j].draw_move(self._cells[ni][nj], undo=True)
+                # if direction is down and no wall: go down
+                elif di == 0 and dj == 1 and self._cells[i][j].BW == False:
+                    self._cells[i][j].draw_move(self._cells[ni][nj])
+                    solved = self._solve_r(ni, nj)
+                    if solved:
+                        return True
+                    self._cells[i][j].draw_move(self._cells[ni][nj], undo=True)
+                # if direction is to Left and no wall: go left
+                elif di == -1 and dj == 0 and self._cells[i][j].LW == False:
+                    self._cells[i][j].draw_move(self._cells[ni][nj])
+                    solved = self._solve_r(ni, nj)
+                    if solved:
+                        return True
+                    self._cells[i][j].draw_move(self._cells[ni][nj], undo=True)
+                # if direction is up and no wall: go up
+                elif di == 0 and dj == -1 and self._cells[i][j].TW == False:
+                    self._cells[i][j].draw_move(self._cells[ni][nj])
+                    solved = self._solve_r(ni, nj)
+                    if solved:
+                        return True
+                    self._cells[i][j].draw_move(self._cells[ni][nj], undo=True)
+        # wrong direction
+        return False
