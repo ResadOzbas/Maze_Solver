@@ -15,7 +15,7 @@ def main():
     win = Window(screen_x, screen_y)
 
     maze = Maze(margin, margin, num_rows, num_cols,
-                cell_size_x, cell_size_y, win)
+                cell_size_x, cell_size_y, win, 0)
     maze._break_entrance_and_exit()
     maze._break_walls_r(0, 0)
     maze._reset_cells_visited()
